@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>テキストRPG - 店舗システム</title>
+<style>
+  body {
+    background-color: #111;
+    color: #eee;
+    font-family: monospace;
+    padding: 3px;
+  }
+
+  #status, #buttons, #log, #adventureStatus {
+    margin-bottom: 2px;
+  }
+
+  #buttons button {
+    margin-right: 1px;
+  }
+
+#log {
+  background-color: #222;
+  padding: 10px;
+  height: 200px;
+  overflow-y: auto;   /* 縦スクロール */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+#log span {
+  display: inline;
+  text-align: left;
+  white-space: pre-wrap;  /* 横折り返し対応 */
+  word-break: break-word; /* 単語も折り返す */
+}
+
+#status p, #adventureStatus p {
+  margin: 0;        /* 上下の余白をなくす */
+  line-height: 1.2; /* 行間を少し詰める */
+  padding: 0;       /* 念のためパディングも消す */
+}
+
+h1 {
+  font-size: 16px;     /* bodyの文字サイズに近い大きさ */
+  margin: 2px 0;       /* 上下マージンをほぼ body と同じ感覚に */
+}
+
+h2 {
+  font-size: 14px;     /* h1より少し小さく */
+  margin: 2px 0;       /* 上下マージンも小さく統一 */
+}
+
+  /* 数字ごとの色指定 */
+  .num-damage   { color: red; }
+  .num-skill    { color: orangered; }
+  .num-purchase { color: gold; }
+  .num-gold     { color: yellow; }
+
+/* モーダル全体 */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
+}
+
+/* モーダル中身 */
+.modal-content {
+  background-color: #222;
+  padding: 20px;
+  border: 1px solid #555;
+  min-width: 400px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: row; /* 左右並び */
+  gap: 10px;
+}
+
+
+/* 左列ボタン */
+.storage-left {
+  flex: 2; /* 幅比2 */
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.storage-left button {
+  width: 100%;
+  display: block;
+}
+
+/* 右側リスト（共通クラス） */
+.storageList {
+  flex: 8; /* 幅比8 */
+  overflow-y: auto;
+  border: 1px solid #555;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+.shop-item {
+  border: 1px solid #555;
+  border-radius: 6px;
+  padding: 6px;
+  margin-bottom: 8px;
+  background: #1a1a1a;
+}
+
+/* 1行目 */
+.shop-item-header {
+  display: grid;
+  grid-template-columns: 1fr auto auto; /* 名前｜値段｜ボタン */
+  align-items: center;
+  gap: 8px;
+}
+
+.shop-item-name {
+  font-size: 1.05em;
+  font-weight: bold;
+}
+
+.shop-item-price {
+  white-space: nowrap;
+}
+
+.shop-item-desc {
+  font-size: 0.85em;
+  opacity: 0.85;
+  margin-top: 4px;
+}
+
+.shop-item-action {
+  text-align: right;
+}
+
+.shop-item-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+</style>
+
+</head>
+
+
+
+<body>
+
+<h1 style="text-align: center; margin-bottom: 2px;">夢幻の迷宮TRPG</h1>
+<div style="text-align: center; margin-bottom: 10px;">Whispers from the Deep</div>
+<hr>
+
+
+<div id="characterCreation" style="text-align:center;">
+  <h2>キャラクター作成</h2>
+  名前: <input type="text" id="playerName" placeholder="名前を入力"><br><br>
+  <div>
+    <strong>HP / MP (合計200)</strong><br>
+    HP: <input type="number" id="hpInput" value="100" step="10" min="10" max="190">
+    MP: <input type="number" id="mpInput" value="50" step="10" min="10" max="190"><br>
+    <small>合計: <span id="hpmpSum">150</span></small>
+  </div>
+  <br>
+
+  <div>
+    <strong>ステータス (最低1, 割り振りポイント32)</strong><br>
+    攻撃: <input type="number" class="statInput" id="atkInput" value="9" min="1" max="31"><br>
+    防御: <input type="number" class="statInput" id="defInput" value="4" min="1" max="31"><br>
+    器用さ: <input type="number" class="statInput" id="dexInput" value="6" min="1" max="31"><br>
+    素早さ: <input type="number" class="statInput" id="agiInput" value="6" min="1" max="31"><br>
+    魔力: <input type="number" class="statInput" id="magInput" value="7" min="1" max="31"><br>
+    <small>残りポイント: <span id="statPoints">26</span></small>
+  </div>
+  <br>
+  <button id="createPlayerBtn">作成して冒険開始</button>
+</div>
+
+<!-- ゲーム画面全体をラップ -->
+<div id="gameUI" style="display: none;">
+  <div id="status"></div>
+  <div id="adventureStatus"></div>
+  <hr>
+  <div id="location">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <h2>ポータル</h2>
+      <button id="modeBtn">気軽</button>
+      <span id="modeDesc">戦闘は自動で進行します</span>
+    </div>
+    <select id="runeSelect"></select>
+    <span class="rune-label">レリア</span>
+    <select id="word1Select"></select>
+    <select id="word2Select"></select>
+    <select id="word3Select"></select>
+    <button id="departBtn">出発</button>
+  </div>
+  <span id="areaInformation"></span><hr>
+
+  <div id="buttons">
+    <button id="weaponShopBtn">武器屋</button>
+    <button id="armorShopBtn">防具屋</button>
+    <button id="accessoryShopBtn">装飾屋</button>
+    <button id="itemShopBtn">道具屋</button>
+    <button id="illusionShopBtn" style="display:none;">幻想市場</button>
+    <button id="saveBtn">記録屋</button>
+    <button id="storageBtn">倉庫</button>
+    <button id="trainingBtn">修練場</button>
+    <button id="innBtn">宿屋</button>
+    <button id="signBtn">符号の間</button>
+    <button id="resetBtn">転生の間</button>
+<!-- <button id="illusionShopBtn">幻想市場debug</button> -->
+  </div>
+
+  <div id="adventureButtons" style="display:none;">
+    <button id="exploreBtn">探索する</button>
+    <button id="returnBtn">街に帰る</button>
+
+<button id="approachBtn" disabled>近寄る</button>
+<button id="retreatBtn" disabled>離れる</button>
+
+
+  </div>
+  <hr>
+<div id="TreasureUI"></div>
+
+<div id="battleUI">
+  <div id="playerArea"></div>
+  <div id="enemyArea"></div>
+  <table id="battleGrid">
+    <!-- JSで自動生成 -->
+  </table>
+  <div id="skillButtons"></div>
+</div>
+
+
+    <div id="trainingArea" style="display:none;"></div>
+    <div id="signArea" style="display:none;">
+      <input type="text" id="dailyCodeInput" placeholder="コードを入力">
+      <button id="submitCodeBtn">確認</button>
+      <p id="signMessage"></p>
+    </div>
+
+  <hr>
+  <h2>ログ</h2> <button id="logTestBtn">ログテスト</button>
+  <div id="log"></div>
+
+<!-- 武器屋モーダル -->
+<div id="weaponModal" class="modal">
+  <div class="modal-content" style="display:flex; flex-direction:column; max-height:80vh;">
+    <h3>武器屋</h3>
+    <div id="weaponList" style="flex:1; overflow-y:auto; border:1px solid #555; padding:5px; border-radius:4px;"></div>
+    <button onclick="closeModal('weaponModal')">閉じる</button>
+  </div>
+</div>
+
+<!-- 防具屋モーダル -->
+<div id="armorModal" class="modal">
+  <div class="modal-content" style="display:flex; flex-direction:column; max-height:80vh;">
+    <h3>防具屋</h3>
+    <div id="armorList" style="flex:1; overflow-y:auto; border:1px solid #555; padding:5px; border-radius:4px;"></div>
+    <button onclick="closeModal('armorModal')">閉じる</button>
+  </div>
+</div>
+
+<!-- 装飾品屋モーダル -->
+
+<div id="accessoryModal" class="modal">
+  <div class="modal-content" style="display:flex; flex-direction:column; max-height:80vh;">
+    <h3>装飾品屋</h3>
+    <div id="accessoryList" style="flex:1; overflow-y:auto; border:1px solid #555; padding:5px; border-radius:4px;"></div>
+    <button onclick="closeModal('accessoryModal')">閉じる</button>
+  </div>
+</div>
+
+<!-- 倉庫モーダル -->
+<div id="storageModal" class="modal">
+  <div class="modal-content">
+    <!-- 左側 -->
+    <div class="storage-left">
+      <button onclick="showStorageCategory('weapon')">武器</button>
+      <button onclick="showStorageCategory('armor')">防具</button>
+      <button onclick="showStorageCategory('accessory')">装飾</button>
+      <button onclick="closeModal('storageModal')">閉じる</button>
+    </div>
+    <!-- 右側 -->
+    <div id="storageList" class="storageList">
+      <!-- アイテム展開 -->
+    </div>
+  </div>
+</div>
+
+<!-- 幻想市場モーダル -->
+<div id="illusionShopModal" class="modal">
+  <div class="modal-content">
+    <!-- 左側 -->
+    <div class="storage-left">
+      <button onclick="showIllusionCategory('weapon')">武器</button>
+      <button onclick="showIllusionCategory('armor')">防具</button>
+      <button onclick="showIllusionCategory('accessory')">装飾</button>
+      <button onclick="showIllusionCategory('shop')">購入</button>
+      <button onclick="closeModal('illusionShopModal')">離れる</button>
+    </div>
+    <!-- 右側 -->
+    <div id="illusionList" class="storageList">
+      <!-- 倉庫と同じようにアイテム展開 -->
+    </div>
+  </div>
+</div>
+
+<!-- 道具屋モーダル -->
+<div id="itemModal" class="modal">
+  <div class="modal-content" style="display:flex; flex-direction:column; max-height:80vh;">
+    <h3>道具屋</h3>
+    <div id="itemList"
+         style="flex:1; overflow-y:auto; border:1px solid #555; padding:5px; border-radius:4px;">
+    </div>
+    <button onclick="closeModal('itemModal')">閉じる</button>
+  </div>
+</div>
+
+
+</div>
+</body>
+
+<script src="Itemdate.js" defer></script>
+<script src="StartGame.js" defer></script>
+<script src="Utility.js" defer></script>
+<script src="Test.js" defer></script>
+<script src="City.js" defer></script>
+<script src="Adventure.js" defer></script>
+<script src="Areaportal.js" defer></script>
+<script src="Battle.js" defer></script>
+
+
+
+</html>
