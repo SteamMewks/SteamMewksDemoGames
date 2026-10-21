@@ -4,81 +4,204 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="theme-color" content="#120f0c">
-  <meta name="description" content="SteamMewks制作のブラウザゲーム体験版ポータル">
+  <meta
+    name="description"
+    content="SteamMewksが制作してきたブラウザゲームの体験版・短編作品・試作版を、実際に遊びながら辿れる開発アーカイブ。"
+  >
   <title>SteamMewks Laboratory Archives</title>
   <link rel="stylesheet" href="./assets/css/style.css?v=20261019-3">
 </head>
+
 <body>
   <div class="gears" aria-hidden="true">
-    <div class="gear spin slow" style="--size: min(210px, 32vw, 32vh); --top: 4%; --left: -3%;"></div>
-    <div class="gear spin-reverse medium" style="--size: min(180px, 30vw, 30vh); --top: 8%; --right: -2%;"></div>
-    <div class="gear spin-reverse slow" style="--size: min(260px, 34vw, 34vh); --bottom: 5%; --left: -4%;"></div>
-    <div class="gear spin medium" style="--size: min(240px, 32vw, 32vh); --bottom: 2%; --right: -3%;"></div>
+    <div
+      class="gear spin slow"
+      style="--size: min(210px, 32vw, 32vh); --top: 4%; --left: -3%;"
+    ></div>
+
+    <div
+      class="gear spin-reverse medium"
+      style="--size: min(180px, 30vw, 30vh); --top: 8%; --right: -2%;"
+    ></div>
+
+    <div
+      class="gear spin-reverse slow"
+      style="--size: min(260px, 34vw, 34vh); --bottom: 5%; --left: -4%;"
+    ></div>
+
+    <div
+      class="gear spin medium"
+      style="--size: min(240px, 32vw, 32vh); --bottom: 2%; --right: -3%;"
+    ></div>
   </div>
 
   <div class="noise" aria-hidden="true"></div>
 
   <main class="shell">
+
     <header class="hero panel">
       <h1>SteamMewks Laboratory Archives</h1>
+
       <p class="lead">
-        SteamMewks制作のブラウザゲーム体験版・短編作品・お蔵入り作品をまとめた公開ページです。<br>
+        SteamMewksのゲーム開発史を保存・公開する、小さな開発博物館です。<br>
+        体験版や短編作品だけでなく、現在へと繋がる試作版や、
+        開発を終えた作品も実際に遊ぶことができます。
       </p>
     </header>
 
+
     <section class="catalog panel" aria-labelledby="catalog-title">
+
       <div class="section-head">
-        <h2 id="catalog-title">Playable Titles</h2>
-        <p>気になる作品を選んで起動してください。</p>
+        <h2 id="catalog-title">Playable Archives</h2>
+
+        <p>
+          SteamMewksが制作してきたゲームの記録です。<br>
+          気になる作品を選んで、実際に触れてみてください。
+        </p>
       </div>
 
+
       <div class="grid">
+
+        <!-- 夢幻ノ迷宮 前日譚 -->
         <article class="card">
+
           <div class="card-top">
             <span class="tag">Prelude</span>
           </div>
+
           <h3>夢幻ノ迷宮 ― 前日譚</h3>
+
           <p>
-            『夢幻ノ迷宮』へ繋がる前日譚。<br>クリアデータは本編に引き継げます。
+            『夢幻ノ迷宮』へと繋がる前日譚。<br>
+            本編より前に起きた出来事を、小さな冒険として体験できます。
           </p>
-          <a class="button" href="./mugen-prelude/" aria-label="夢幻ノ迷宮 前日譚をプレイする">プレイする</a>
+
+          <p>
+            <strong>プレイ時間：</strong>
+            1プレイ 約10～20分
+            <br>
+            <small>継続して遊べる要素があります。</small>
+          </p>
+
+          <p>
+            クリアデータは『夢幻ノ迷宮』本編へ引き継ぐことができます。
+          </p>
+
+          <a
+            class="button"
+            href="./mugen-prelude/"
+            aria-label="夢幻ノ迷宮 前日譚をプレイする"
+          >
+            プレイする
+          </a>
+
         </article>
 
+
+        <!-- とらぶるしゅーたー -->
         <article class="card">
+
           <div class="card-top">
             <span class="tag">Demo</span>
           </div>
+
           <h3>とらぶるしゅーたー DEMO</h3>
+
           <p>
-            『とらぶるしゅーたー』の体験版。<br>ゲームの雰囲気やプレイ感覚をお楽しみ頂けます。
+            『とらぶるしゅーたー』の体験版。<br>
+            ゲームの世界観や基本的なプレイ感覚を楽しめるデモバージョンです。
           </p>
-          <a class="button" href="./troubleshooter-demo/" aria-label="とらぶるしゅーたー DEMOをプレイする">プレイする</a>
+
+          <p>
+            <strong>プレイ時間：</strong>
+            1プレイ 約30分
+          </p>
+
+          <a
+            class="button"
+            href="./troubleshooter-demo/"
+            aria-label="とらぶるしゅーたー DEMOをプレイする"
+          >
+            プレイする
+          </a>
+
         </article>
 
+
+        <!-- プロト版 夢幻ノ迷宮 -->
         <article class="card">
+
           <div class="card-top">
-            <span class="tag">Proto</span>
+            <span class="tag">Alpha</span>
+            <span class="tag">2025</span>
           </div>
-          <h3>プロト版夢幻の迷宮</h3>
+
+          <h3>プロト版 夢幻ノ迷宮</h3>
+
           <p>
-            『夢幻ノ迷宮』の原型。<br>ブラッシュアップのためお蔵入り。
+            2025年に制作された『夢幻ノ迷宮』の初期試作版。<br>
+            現在の作品へ発展する以前の、α版に近いゲームです。
           </p>
-          <a class="button" href="./proto-mugen/" aria-label="プロト版をプレイする">プレイする</a>
+
+          <p>
+            <strong>プレイ時間：</strong>
+            1ゲーム 約10分
+          </p>
+
+          <p>
+            現行版とはゲームシステムや内容が大きく異なります。<br>
+            『夢幻ノ迷宮』がどのように生まれ、変化していったのかを残す
+            開発資料として公開しています。
+          </p>
+
+          <a
+            class="button"
+            href="./proto-mugen/"
+            aria-label="2025年制作のプロト版 夢幻ノ迷宮をプレイする"
+          >
+            プレイする
+          </a>
+
         </article>
+
       </div>
     </section>
 
-    <section class="notes panel" aria-labelledby="notes-title" hidden>
-      <h2 id="notes-title">About This Repository</h2>
-      <ul>
-        <li>新しい作品を追加する場合は、ゲーム用フォルダを増やしてトップページにリンクを足すだけで運用できます。</li>
-        <li>ルートには <code>.nojekyll</code> を置いてあるので、特殊なビルドなしで公開可能です。</li>
-      </ul>
+
+    <section class="notes panel" aria-labelledby="notes-title">
+
+      <div class="section-head">
+        <h2 id="notes-title">About the Archives</h2>
+      </div>
+
+      <p>
+        SteamMewks Laboratory Archivesでは、
+        完成した作品だけではなく、体験版、短編、試作品、
+        そして開発を終えた作品も保存しています。
+      </p>
+
+      <p>
+        ゲームは完成した瞬間だけが作品ではありません。
+        試行錯誤の途中で生まれたシステムや、
+        後の作品へ受け継がれたアイデアもまた、
+        SteamMewksの制作活動を形作ってきた記録です。
+      </p>
+
+      <p>
+        ここでは、それらを単なる資料として残すのではなく、
+        <strong>実際に遊ぶことのできる開発記録</strong>
+        として公開していきます。
+      </p>
+
     </section>
+
 
     <footer class="footer">
       <p>© SteamMewks</p>
     </footer>
+
   </main>
 
   <script src="./assets/js/main.js"></script>
