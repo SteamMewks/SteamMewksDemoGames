@@ -10,6 +10,69 @@
   >
   <title>SteamMewks Laboratory Archives</title>
   <link rel="stylesheet" href="./assets/css/style.css?v=20261019-3">
+
+  <style>
+    .game-summary{
+      margin:0;
+      color:var(--muted);
+      line-height:1.82;
+    }
+
+    .game-details{
+      margin-top:14px;
+      color:var(--muted);
+    }
+
+    .game-details summary{
+      cursor:pointer;
+      padding:10px 12px;
+      border:1px solid var(--line-soft);
+      border-radius:10px;
+      color:var(--accent-2);
+      font-weight:700;
+      list-style:none;
+      user-select:none;
+      transition:border-color .2s ease, background .2s ease;
+    }
+
+    .game-details summary::-webkit-details-marker{
+      display:none;
+    }
+
+    .game-details summary::before{
+      content:"＋";
+      display:inline-block;
+      width:1.4em;
+    }
+
+    .game-details[open] summary::before{
+      content:"－";
+    }
+
+    .game-details summary:hover{
+      border-color:var(--accent);
+      background:rgba(224,182,111,0.05);
+    }
+
+    .details-content{
+      padding:14px 4px 0;
+    }
+
+    .details-content p{
+      margin:0;
+      color:var(--muted);
+      line-height:1.82;
+    }
+
+    .details-content p + p{
+      margin-top:12px;
+    }
+
+    .game-details + .button{
+      margin-top:18px;
+    }
+  </style>
+
 </head>
 
 <body>
@@ -74,21 +137,29 @@
 
           <h3>夢幻ノ迷宮 ― 前日譚</h3>
 
-          <p>
-            『夢幻ノ迷宮』へと繋がる前日譚。<br>
-            本編より前に起きた出来事を、小さな冒険として体験できます。
+          <p class="game-summary">
+            『夢幻ノ迷宮』へと繋がる前日譚。
           </p>
 
-          <p>
-            <strong>プレイ時間：</strong>
-            1プレイ 約10～20分
-            <br>
-            <small>継続して遊べる要素があります。</small>
-          </p>
+          <details class="game-details">
+            <summary>作品について</summary>
+            <div class="details-content">
+              <p>
+                本編より前に起きた出来事を、小さな冒険として体験できます。
+              </p>
 
-          <p>
-            クリアデータは『夢幻ノ迷宮』本編へ引き継ぐことができます。
-          </p>
+              <p>
+                <strong>プレイ時間：</strong>
+                1プレイ 約10～20分
+                <br>
+                <small>継続して遊べる要素があります。</small>
+              </p>
+
+              <p>
+                クリアデータは『夢幻ノ迷宮』本編へ引き継ぐことができます。
+              </p>
+            </div>
+          </details>
 
           <a
             class="button"
@@ -111,15 +182,23 @@
 
           <h3>とらぶるしゅーたー DEMO</h3>
 
-          <p>
-            『とらぶるしゅーたー』の体験版。<br>
-            ゲームの世界観や基本的なプレイ感覚を楽しめるデモバージョンです。
+          <p class="game-summary">
+            『とらぶるしゅーたー』の体験版。
           </p>
 
-          <p>
-            <strong>プレイ時間：</strong>
-            1プレイ 約30分
-          </p>
+          <details class="game-details">
+            <summary>作品について</summary>
+            <div class="details-content">
+              <p>
+                ゲームの世界観や基本的なプレイ感覚を楽しめるデモバージョンです。
+              </p>
+
+              <p>
+                <strong>プレイ時間：</strong>
+                1プレイ 約30分
+              </p>
+            </div>
+          </details>
 
           <a
             class="button"
@@ -142,21 +221,29 @@
 
           <h3>プロト版 夢幻ノ迷宮</h3>
 
-          <p>
-            2025年に制作された『夢幻ノ迷宮』の初期試作版。<br>
-            現在の作品へ発展する以前の、α版に近いゲームです。
+          <p class="game-summary">
+            2025年に制作された『夢幻ノ迷宮』の初期試作版。
           </p>
 
-          <p>
-            <strong>プレイ時間：</strong>
-            1ゲーム 約10分
-          </p>
+          <details class="game-details">
+            <summary>作品について</summary>
+            <div class="details-content">
+              <p>
+                現在の作品へ発展する以前の、α版に近いゲームです。
+              </p>
 
-          <p>
-            現行版とはゲームシステムや内容が大きく異なります。<br>
-            『夢幻ノ迷宮』がどのように生まれ、変化していったのかを残す
-            開発資料として公開しています。
-          </p>
+              <p>
+                <strong>プレイ時間：</strong>
+                1ゲーム 約10分
+              </p>
+
+              <p>
+                現行版とはゲームシステムや内容が大きく異なります。<br>
+                『夢幻ノ迷宮』がどのように生まれ、変化していったのかを残す
+                開発資料として公開しています。
+              </p>
+            </div>
+          </details>
 
           <a
             class="button"
@@ -178,14 +265,23 @@
 
   <h3>Simple Chess ― 旧版</h3>
 
-  <p>
-    SteamMewksが制作したブラウザチェスの旧版。<br>
-    通常対局に加えて、スキルを使う変則モードやAIとのソロ対局を遊べます。<br>AI開発の原型でDeep blueを目指して一度挫折したものです。
+  <p class="game-summary">
+    SteamMewksが制作したブラウザチェスの旧版。
   </p>
 
-  <p>
-    現在の『機巧の遊戯卓』へ繋がる、過去の試作・開発記録として公開しています。
-  </p>
+  <details class="game-details">
+    <summary>作品について</summary>
+    <div class="details-content">
+      <p>
+        通常対局に加えて、スキルを使う変則モードやAIとのソロ対局を遊べます。<br>
+        AI開発の原型でDeep blueを目指して一度挫折したものです。
+      </p>
+
+      <p>
+        現在の『機巧の遊戯卓』へ繋がる、過去の試作・開発記録として公開しています。
+      </p>
+    </div>
+  </details>
 
   <a
     class="button"
